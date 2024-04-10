@@ -1,0 +1,24 @@
+if opc == 1
+    while true
+        opc = angulos()
+        while true 
+            if opc == 1
+                opc = rad_grau()
+            elseif opc == 2
+                opc= grau_rad()
+            elseif opc == 3
+                opc = tab_graus()
+            elseif opc == 4
+                opc = tab_rad()
+            elseif opc == 0
+                opc = 1
+                break
+            end
+        end
+    end
+elseif opc == 2
+    print(opc)
+
+elseif opc == 0
+    exit()
+end

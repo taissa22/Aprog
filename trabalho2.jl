@@ -167,6 +167,77 @@ function area(fonte)
     return num
 end
 
+function area_conv(de, para)
+    opcoes = ["quilômetro quadrado (km²)", "hectare (ha)", "are (a)", "metro quadrado (m²)", "decímetro quadrado (dm²)", "centímetro quadrado (cm²)", "milímetro quadrado (mm²)", "polegada quadrada (in²)", "pé quadrado (ft²)", "jarda quadrada (yd²)", "rod quadrado", "rood", "acre (ac)", "homestead", "milha quadrada (mi²)", "légua quadrada"]
+    println("=============================================================")
+    @printf("Conversão de %s para %s\n", opcoes[de], opcoes[para])
+    println("=============================================================\n")
+    @printf("Digite a área em %s.\n", opcoes[de])
+    print("Digite um número real positivo: ")
+    inicial = parse(Float64, readline())
+    if de == para
+        final = incial 
+    end
+    new = de
+    if de != 1
+        if de == 2
+            inicial = inicial * 0.01
+        elseif de == 3
+            inicial = inicial * 0.0001
+        elseif de == 4
+            inicial = inicial * 0.000001
+        elseif de == 5
+            inicial = inicial * 0.00000001
+        elseif de == 6
+            inicial = inicial / 10000000000
+        de = 1
+    end
+    if de == 1
+        elseif para == 2
+            final = inicial/100
+        else if para == 3
+            final = inicial*10000
+        elseif para == 4
+            final = inicial * 1000000
+        elseif para == 5
+            final = inicial * 100000000
+        elseif para == 6
+            final = inicial * 10000000000
+        elseif para == 7
+            final = inicial * 1000000000000
+        elseif para == 8
+            final = inicial * 1550003000
+        elseif para == 9
+            final = inicial * 10763910
+        elseif para == 10
+            final = inicial * 1195990,0463
+        elseif para == 11
+            final = inicial * 39536.87
+        elseif para == 12
+            final = inicial * 988.42
+        elseif para == 13
+            final = inicial * 247.11
+        elseif para == 14
+            final = inicial * 1.5444
+        elseif para == 15
+            final = inicial / 2,59
+        elseif para == 16
+            final = incial * 23,309892993024
+        end
+    end
+    @printf("Área em %s: ", opcoes[para])
+    println(final)
+    @printf("""
+                Opções:
+
+                    1 - Converter novamente de %s para %s
+                    0 - Retornar ao menu anterior
+
+                """, opcoes[new], opcoes[para])
+    num = ler_opcao(0, 1)
+    return num
+end
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function comprimento(fonte)
@@ -247,7 +318,44 @@ end
 # if telaInicial() == 1
 #     angulos()
 # grau_rad()
-tab_rad()
+# tab_rad()
 function main()
-
+    menu = 0
+    de = 0
+    para = 0
+    while menu!= -1
+        menu = 0
+        opc = telaInicial()
+        if opc == 1
+            while menu != 1 
+                opc = angulos()
+                if opc == 1
+                    opc = rad_grau()
+                elseif opc == 2
+                    opc= grau_rad()
+                elseif opc == 3
+                    opc = tab_graus()
+                elseif opc == 4
+                    opc = tab_rad()
+                elseif opc == 0
+                    menu = 1
+                end
+            end
+        elseif opc == 2
+            while menu != 1 
+                de = area(de)
+                para = area(para)
+                opc = area_conv(de, para)
+            end
+        elseif opc == 0 
+            exit()
+        end
+    end
 end
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#main()
+de = area("de")
+para = area("para")
+opc = area_conv(de, para)
