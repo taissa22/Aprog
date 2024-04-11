@@ -647,9 +647,9 @@ function pressao(fonte)
     menu5 = ["Megapascal (MPa)", "Quilopascal (kPa)", "Pascal (Pa)"]
     menu6 = ["KSI", "PSI", "Libra por polegada quadrada (lbf/in²)"]
     title= "Converter " * fonte * " uma das seguintes opções: \n\nSistema Internacional de Unidades\n--------------------------------------------"
-    menu("Conversão de unidades de massa", title, menu4)
+    menu("Conversão de unidades de massa", title, menu5)
     println()
-    menuPt2("Sistema Inglês\n-------------------------------------------", menu4_2, 3)
+    menuPt2("Sistema Inglês\n-------------------------------------------", menu6, 3)
     println("-------------------------------------------")
     println("  0 - Retornar para o menu anterior\n")
     num = ler_opcao(0, 15)
@@ -663,19 +663,26 @@ end
 
 function temperaturas(fonte)
     menu5 =  ["Kelvin (K)", "Grau Celsius (°C)", "Grau Fahrenheit (°F)", "Grau Rankine (°Ra)", "Grau Réaumur (°Ré)", "Grau Newton (°N)", "Grau Delisle (°D)"]
-    title= "Converter " * fonte * " uma das seguintes opções: \n\nSistema Internacional de Unidades\n--------------------------------------------"
-    menu("Conversão de unidades de massa", title, menu4)
+    title= "Converter " * fonte * " uma das seguintes opções: \n\n"
+    menu("Conversão de escalas de temperaturas", title, menu5)
     println("  0 - Retornar para o menu anterior\n")
-    num = ler_opcao(0, 15)
+    num = ler_opcao(0, 7)
     return num
 end
 
 function temperaturas_conv(de, para)
+    
 end
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function velocidades(fonte)
+    menu5 =  ["Quilômetro por hora (km/h)", "Metro por segundo (m/s)", "Quilômetro por segundo (km/s)", "Pé por segundo (ft/s)", "Milha por hora (mph)", "Milha por segundo (mps)"]
+    title= "Converter " * fonte * " uma das seguintes opções: \n\n"
+    menu("Conversão entre velocidades", title, menu5)
+    println("  0 - Retornar para o menu anterior\n")
+    num = ler_opcao(0, 6)
+    return num
 end
 
 function velocidades_conv(de, para)
@@ -684,6 +691,14 @@ end
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function volume(fonte)
+    menu5 = ["Unidades de volume sólido", "Unidades de volume líquido"]
+    title= "Converter " * fonte * " uma das seguintes opções: \n\n"
+    menu("Conversão de unidades de volume", title, menu5)
+    println("  0 - Retornar para o menu anterior\n")
+end
+
+
+function volume_conv(de, para)
 end
 
 #nem ideia como faço essa merda pqp que ÓDIOOOO
