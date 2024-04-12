@@ -38,8 +38,19 @@ function ler_opcao(minima, maxima)
         opcao = parse(Int, readline())
     end
     return opcao
-    end
+end
 
+function ler_opcao_ang(minima, maxima)
+    print("Digite uma opção: ")
+    opcao = parse(Float32, readline())
+    while !( minima <= opcao <= maxima)
+        println("Opção inválida!")
+        println()
+        print("Digite uma opção: ")
+        opcao = parse(Int, readline())
+    end
+    return opcao
+end
 # funções para os conversores
 
 function telaInicial()
@@ -108,7 +119,7 @@ function tab_graus()
         println("=============================================================")
         println("Digite o incremento em radianos.")
         print("Digite um número real no intervalo [0.01, 6.28]: ")
-        rad = parse(Float64, readline())
+        rad = ler_opcao_ang(0.01, 6.28)
         @printf("""
                 ---------------
                 Radianos  Graus
@@ -140,7 +151,7 @@ function tab_rad()
         println("=============================================================")
         println("Digite o incremento em graus.")
         print("Digite um número inteiro no intervalo [1, 360]: ")
-        grau = parse(Float64, readline())
+        grau = ler_opcao_ang(1, 360)
         @printf("""
                 ---------------
                 Graus  Radianos
@@ -220,8 +231,7 @@ function area_conv(de, para)
             elseif de == 15
                 inicial = inicial * 2.59
             elseif de == 16
-                inicial = inicial / 23.309892993024
-                
+                inicial = inicial / 23.309892993024  
             end
             de = 1
         end
@@ -230,9 +240,9 @@ function area_conv(de, para)
         end
         if de == 1
             if para == 2
-                final = inicial/100
+                final = inicial / 100
             elseif para == 3
-                final = inicial*10000
+                final = inicial * 10000
             elseif para == 4
                 final = inicial * 1000000
             elseif para == 5
