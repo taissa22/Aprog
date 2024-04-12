@@ -43,10 +43,10 @@ function ler_opcao(minima, maxima)
 # funções para os conversores
 
 function telaInicial()
-    menu1 = ["Ângulos", "Área", "Comprimento", "Força", "Massa", "Moeda", "Pressão", "Temperatura", "Velocidade", "Volume"]
+    menu1 = ["Ângulos", "Área", "Comprimento", "Força", "Massa", "Moeda", "Pressão", "Temperatura", "Velocidade"]
     menu("Conversor de Unidades e Moedas","Opções: ", menu1)
     println("  0 - Sair\n")
-    num = ler_opcao(0, 10)
+    num = ler_opcao(0, 9)
     return num
 end
 
@@ -1188,7 +1188,6 @@ function main()
         #          menu = 1
         #         end
         #         menu = volume_conv(de, para)
-        end
         elseif opc == 0 
             exit()
         end
