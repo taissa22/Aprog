@@ -572,7 +572,7 @@ end
 
 function moedas_conv(de, para)
     num = 1
-    opcoes = ["(USD)", "(GBP)", "(EUR)", "(JPY)", "(CHF)", "(AUD)", "(CAD)", "(BRL)", "(RMB)"]
+    opcoes = ["USD", "GBP", "EUR", "JPY", "CHF", "AUD", "CAD", "BRL", "RMB"]
     while num != 0
         println("=============================================================")
         @printf("Conversão de %s para %s\n", opcoes[de], opcoes[para])
@@ -584,21 +584,21 @@ function moedas_conv(de, para)
         #outros para dolar
         if de != 1
             if de == 2
-                inicial = inicial * 0.001
+                inicial = inicial * 0.7971303
             elseif de == 3
-                inicial = inicial * 0.01
+                inicial = inicial * 1.0739
             elseif de == 4
-                inicial = inicial * 0.1
+                inicial = inicial * 0.0065407
             elseif de == 5
-                inicial = inicial * 10
+                inicial = inicial * 1.0957703
             elseif de == 6
-                inicial = inicial * 100
+                inicial = inicial *  0.6509 
             elseif de == 7
-                inicial = inicial * 1000
+                inicial = inicial * 0.7305136
             elseif de == 8
-                inicial = inicial * 1.1023 * 0.000001
+                inicial = inicial * 0.1974412
             elseif de == 9
-                inicial = inicial * (1/226796)
+                inicial = inicial * 0.1382342
             end
             de = 1
         end
@@ -609,21 +609,21 @@ function moedas_conv(de, para)
         #dolar para outros
         if de == 1
             if para == 2
-                final = inicial  * 1000
+                final = inicial  * 1.2545 
             elseif para == 3
-                final = inicial * 10
+                final = inicial * 0.9311854
             elseif para == 4
-                final = inicial * 100
+                final = inicial * 152.89
             elseif para == 5
-                final = inicial * 0.1
+                final = inicial * 0.9126
             elseif para == 6
-                final = inicial * 0.01
+                final = inicial * 1.5363343
             elseif para == 7
-                final = inicial * 0.001
+                final = inicial * 1.3689
             elseif para == 8
-                final = inicial / 1.1023 * 0.000001
+                final = inicial * 5.0648
             elseif para == 9
-                final = inicial / (1/226796)
+                final = inicial * 7.2341
             end 
         end
         @printf("Moeda em %s: ", opcoes[para])
@@ -647,16 +647,72 @@ function pressao(fonte)
     menu5 = ["Megapascal (MPa)", "Quilopascal (kPa)", "Pascal (Pa)"]
     menu6 = ["KSI", "PSI", "Libra por polegada quadrada (lbf/in²)"]
     title= "Converter " * fonte * " uma das seguintes opções: \n\nSistema Internacional de Unidades\n--------------------------------------------"
-    menu("Conversão de unidades de massa", title, menu5)
+    menu("Conversão de unidades de pressão", title, menu5)
     println()
     menuPt2("Sistema Inglês\n-------------------------------------------", menu6, 3)
     println("-------------------------------------------")
     println("  0 - Retornar para o menu anterior\n")
-    num = ler_opcao(0, 15)
+    num = ler_opcao(0, 6)
     return num
 end
 
 function pressao_conv(de, para)
+    num = 1
+    opcoes = ["MPa", "kPa", "Pa", "KSI", "PSI", "lbf/in²"]
+    while num != 0
+        println("=============================================================")
+        @printf("Conversão de %s para %s\n", opcoes[de], opcoes[para])
+        println("=============================================================\n")
+        @printf("Digite a pressão em %s.\n", opcoes[de])
+        print("Digite um número real positivo: ")
+        inicial = parse(Float64, readline())
+        new = de
+        #outros para pascal
+        if de != 3
+            if de == 1
+                inicial = inicial * 0.000001
+            elseif de == 2
+                inicial = inicial * 0.001
+            elseif de == 4
+                inicial = inicial / (6.895*1000000)
+            elseif de == 5
+                inicial = inicial / 6894.75729
+            elseif de == 6
+                inicial = inicial * 0.00014504
+            end
+            de = 3
+        end
+
+        if de == para
+            final = inicial 
+        end
+        #pascal para outros
+        if de == 3
+            if para == 1
+                final = inicial / 0.000001
+            elseif para == 2
+                final = inicial / 0.001
+            elseif para == 4
+                final = inicial * (6.895*1000000)
+            elseif para == 5
+                final = inicial * 6894.75729
+            elseif para == 6
+                final = inicial / 0.00014504
+            end 
+        end
+        @printf("Pressão em %s: ", opcoes[para])
+        @printf("%.2f\n", final)
+        @printf("""
+                    Opções:
+
+                        1 - Converter novamente de %s para %s
+                        0 - Retornar ao menu anterior
+
+                    """, opcoes[new], opcoes[para])
+    
+        num = ler_opcao(0, 1)
+    end
+    return num
 end
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -671,7 +727,66 @@ function temperaturas(fonte)
 end
 
 function temperaturas_conv(de, para)
+    num = 1
+    opcoes = ["°K", "°C", "°F", "°Ra", "°Ré", "°N", "°D"]
+    while num != 0
+        println("=============================================================")
+        @printf("Conversão de %s para %s\n", opcoes[de], opcoes[para])
+        println("=============================================================\n")
+        @printf("Digite a temperatura em %s.\n", opcoes[de])
+        print("Digite um número real positivo: ")
+        inicial = parse(Float64, readline())
+        new = de
+        #outros para celsius
+        if de != 2
+            if de == 1
+                inicial = inicial - 273.15
+            elseif de == 3
+                inicial = (inicial-32)*5/9
+            elseif de == 4
+                inicial = (inicial - 491,67) * 5/9 
+            elseif de == 5
+                inicial = inicial * 5/4
+            elseif de == 6
+                inicial = inicial / 0.33000
+            elseif de == 7
+                inicial = (inicial + 100) / 15000
+            end
+            de = 2
+        end
+
+        if de == para
+            final = inicial 
+        end
+        #celsius para outros
+        if de == 2
+            if para == 1
+                final = inicial + 273.15
+            elseif para == 3
+                final = (inicial / 9/5) + 32
+            elseif para == 4
+                final = (inicial * 9/5) + 491,67
+            elseif para == 5
+                final = inicial * 4/5
+            elseif para == 6
+                final = inicial * 0.33000
+            elseif para == 7
+                final = (inicial * 1.5000)-100.00
+            end 
+        end
+        @printf("Temperatura em %s: ", opcoes[para])
+        @printf("%.2f\n", final)
+        @printf("""
+                    Opções:
+
+                        1 - Converter novamente de %s para %s
+                        0 - Retornar ao menu anterior
+
+                    """, opcoes[new], opcoes[para])
     
+        num = ler_opcao(0, 1)
+    end
+    return num
 end
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -686,22 +801,237 @@ function velocidades(fonte)
 end
 
 function velocidades_conv(de, para)
+    num = 1
+    opcoes = ["km/h", "m/s", "km/s", "ft/s", "mph", "mps"]
+    while num != 0
+        println("=============================================================")
+        @printf("Conversão de %s para %s\n", opcoes[de], opcoes[para])
+        println("=============================================================\n")
+        @printf("Digite a velocidade em %s.\n", opcoes[de])
+        print("Digite um número real positivo: ")
+        inicial = parse(Float64, readline())
+        new = de
+        #outros para km/h
+        if de != 1
+            if de == 2
+                inicial = inicial * 3.6
+            elseif de == 3
+                inicial = inicial * 3600
+            elseif de == 4
+                inicial = inicial * 1.097
+            elseif de == 5
+                inicial = inicial * 1.609
+            elseif de == 6
+                inicial =  inicial * 5794
+            end
+            de = 1
+        end
+
+        if de == para
+            final = inicial 
+        end
+        #km/h para outros
+        if de == 1
+            if para == 2
+                final = inicial / 3.6
+            elseif para == 3
+                final = inicial / 3600
+            elseif para == 4
+                final = inicial / 1.097
+            elseif para == 5
+                final = inicial / 1.609
+            elseif para == 6
+                final = inicial / 5794
+            end 
+        end
+        @printf("Velocidade em %s: ", opcoes[para])
+        @printf("%.2f\n", final)
+        @printf("""
+                    Opções:
+
+                        1 - Converter novamente de %s para %s
+                        0 - Retornar ao menu anterior
+
+                    """, opcoes[new], opcoes[para])
+    
+        num = ler_opcao(0, 1)
+    end
+    return num
 end
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+function volume_solido(fonte)
+    menu5 = ["Quilômetro cúbico", "Hectômetro cúbico", "Decâmetro cúbico", "Metro cúbico", "Decímetro cúbico"]
+    menu6 = ["Polegada cúbica", "Pé cúbico", "Jarda cúbica", "Acre-pé", "Milha cúbica"]
+    title= "Converter " * fonte * " uma das seguintes opções: \n\nSistema Internacional de Unidades\n--------------------------------------------"
+    menu("Conversão de unidades de volume sólido", title, menu5)
+    println()
+    menuPt2("Sistema de medidas Imperial\n-------------------------------------------", menu6, 5)
+    println("-------------------------------------------")
+    println("  0 - Retornar para o menu anterior\n")
+    num = ler_opcao(0, 10)
+    return num
+end
+function volume_liquido(fonte)
+    menu5 =  ["Quilolitro", "Hectolitro", "Decalitro", "Litro", "Decilitro"]
+    menu6 = ["barril", "galão", "quarto", "pinto", "gill", "onça líquida ou fluida", "dracma líquido ou fluido", "minim"]
+    title= "Converter " * fonte * " uma das seguintes opções: \n\nSistema Internacional de Unidades\n--------------------------------------------"
+    menu("Conversão de unidades de volume líquido", title, menu5)
+    println()
+    menuPt2("Sistema de medidas Imperial\n-------------------------------------------", menu6, 5)
+    println("-------------------------------------------")
+    println("  0 - Retornar para o menu anterior\n")
+    num = ler_opcao(0, 10)
+    return num
+end
 function volume(fonte)
     menu5 = ["Unidades de volume sólido", "Unidades de volume líquido"]
     title= "Converter " * fonte * " uma das seguintes opções: \n\n"
     menu("Conversão de unidades de volume", title, menu5)
     println("  0 - Retornar para o menu anterior\n")
+    num = ler_opcao(0, 2)
+    return num 
 end
 
 
 function volume_conv(de, para)
+    num = 1
+    opcoes = ["Quilômetro cúbico", "Hectômetro cúbico", "Decâmetro cúbico", "Metro cúbico", "Decímetro cúbico", "Polegada cúbica", "Pé cúbico", "Jarda cúbica", "Acre-pé", "Milha cúbica", "Quilolitro", "Hectolitro", "Decalitro", "Litro", "Decilitro", "barril", "galão", "quarto", "pinto", "gill", "onça líquida ou fluida", "dracma líquido ou fluido", "minim"]
+    while num != 0
+        println("=============================================================")
+        @printf("Conversão de %s para %s\n", opcoes[de], opcoes[para])
+        println("=============================================================\n")
+        @printf("Digite a velocidade em %s.\n", opcoes[de])
+        print("Digite um número real positivo: ")
+        inicial = parse(Float64, readline())
+        new = de
+        #outros para metro cubico
+        if de > 1 && de <= 10 && de != 4
+            if de == 1
+                inicial = inicial * 1000000000
+            elseif de == 2
+                inicial = inicial * 1000000
+            elseif de == 3
+                inicial = inicial * 1000
+            elseif de == 5
+                inicial = inicial  / 1000
+            elseif de == 6
+                inicial = inicial / 61023.7
+            elseif de == 7
+                inicial =  inicial / 35.315
+            elseif de == 8
+                inicial = inicial / 1.308
+            elseif de == 9
+                inicial = inicial * 1233
+            elseif de == 10
+                inicial = inicial * 4168000000
+            end
+            de = 4
+        #outros para litro
+        elseif de > 10  && d != 14
+            if de == 11
+                inicial = inicial * 1000
+            elseif de == 12
+                inicial = inicial * 100
+            elseif de == 13
+                inicial = inicial * 10
+            elseif de == 15
+                inicial =  inicial / 10
+            elseif de == 16
+                inicial = inicial / 158.987
+            elseif de == 17
+                inicial = inicial * 3.78541
+            elseif de == 18
+                inicial = inicial * 1,136
+            elseif de == 19
+                inicial = inicial / 2.113
+            elseif de == 20
+                inicial = inicial / 8.45351
+            elseif de == 21
+                inicial = inicial  / 33.814
+            elseif de == 22
+                inicial = inicial / 281.560
+            elseif de == 23
+                inicial = inicial / 16230.7
+            end
+            de = 14
+        end
+        if de == para
+            final = inicial 
+        end
+        #metro cubico <-> litros
+        if de == 4 && para >= 11
+            inicial = inicial*1000
+            de = 14
+        elseif de ==14 && para <=11
+            inicial = inicial/1000
+            de = 4
+        end
+        #metro cubico para outros
+        if de == 4
+            if para == 1
+                final = inicial / 1000000000
+            elseif para == 2
+                final = inicial / 1000000
+            elseif para == 3
+                final = inicial / 1000
+            elseif para == 5
+                final = inicial * 1000
+            elseif para == 6
+                final = inicial * 61023.7
+            elseif para == 7
+                final = inicial * 35.315
+            elseif para == 8
+                final = inicial * 1.308
+            elseif para == 9
+                final = inicial / 1233
+            elseif para == 10
+                final = inicial / 4168000000
+            end 
+        #litro para outros
+        elseif de == 14
+            if para == 11
+                final = inicial / 1000
+            elseif para == 12
+                final = inicial / 100
+            elseif para == 13
+                final = inicial / 10
+            elseif para == 15
+                final = inicial  * 10
+            elseif para == 16
+                final = inicial * 158.987
+            elseif para == 17
+                final = inicial / 3.78541
+            elseif para == 18
+                final = inicial / 1,136
+            elseif para == 19
+                final = inicial * 2.113
+            elseif para == 20
+                final = inicial * 8.45351
+            elseif para == 21
+                final = inicial  * 33.814
+            elseif para == 22
+                final = inicial * 281.560
+            elseif para == 23
+                final = inicial * 16230.7
+            end 
+        end
+        @printf("Volume em %s: ", opcoes[para])
+        @printf("%.2f\n", final)
+        @printf("""
+                    Opções:
+
+                        1 - Converter novamente de %s para %s
+                        0 - Retornar ao menu anterior
+
+                    """, opcoes[new], opcoes[para])
+    
+        num = ler_opcao(0, 1)
+    end
+    return num
 end
 
-#nem ideia como faço essa merda pqp que ÓDIOOOO
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function main()
@@ -839,19 +1169,26 @@ function main()
                 end
             end
         elseif opc == 10
-            while menu != 1 
-                de = volume("de")
-                if de != 0
-                    para = volume("para")
-                    if para != 0
-                        menu = volume_conv(de, para)
-                    else
-                        menu = 1
-                    end
-                else
-                 menu = 1
-                end
-            end
+            print("era pra ter volume, mas não deu certo :()")
+        #     while menu != 1 
+        #         de = volume("de")
+        #         if de == 1 
+        #             de = volume_solido("de")
+        #         elseif de == 2
+        #             de = volume_liquido("de") + 10
+        #         else
+        #          menu = 1
+        #         end
+        #         para = volume("para")
+        #         if para == 1
+        #             para = volume_solido("para")
+        #         elseif para == 2
+        #             para = volume_liquido("para") + 10
+        #         else
+        #          menu = 1
+        #         end
+        #         menu = volume_conv(de, para)
+        end
         elseif opc == 0 
             exit()
         end
@@ -861,4 +1198,3 @@ end
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 main()
-
