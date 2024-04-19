@@ -1,0 +1,36 @@
+try
+    t = open(arquivo, "r")
+    println("Arquivo $arquivo lido com sucesso!")
+    i==0
+    while ! eof(t)
+        i+=1
+        nome = readline(t)
+        mat = readline(t)
+        p1= parse(Float32, readline(t))
+        p2 = parse(Float32, readline(t))
+        p3 = parse(Float32, readline(t))
+        t1 = parse(Float32, readline(t))
+        t2 = parse(Float32, readline(t))
+        f = parse(Int, readline(t))
+        nF = parse(Float32, readline(t))
+        s = readline(t)
+        aluno = Aluno(nome, mat, p1, p2, p3, t1, t2, f, nF, s)
+        push!(turma, aluno)
+    end
+    print("entrou aqui")
+    print(turma)
+    close(t)
+catch 
+    println("Arquivo $arquivo não existe!")
+end #try catch
+
+       # elseif num == 2
+        #     println("Digite o nome do arquivo para a nova turma: ")
+        #     arquivo = readline()
+        #     try
+        #         t = open(arquivo, "w")
+
+
+for aluno in turma
+        println(aluno.nome)
+    end
