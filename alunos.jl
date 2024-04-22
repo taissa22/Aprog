@@ -63,6 +63,8 @@ function telaInicial()
             turma = telaEditarEstudante(turma)
         elseif num == 6
             turma, arquivo = telaRelerTurma(turma, arquivo)
+        elseif num == 7
+            salvarSair(turma, arquivo)
         end #if num
     end
     return
@@ -103,8 +105,8 @@ function abreArmazena()
                 f = parse(Int, readline(s))
                 nF = parse(Int, readline(s))
                 si = readline(s)
-                    aluno = Aluno(nome, mat, p1, p2, p3, t1, t2, f, nF, si)
-                    push!(turma, aluno)
+                aluno = Aluno(nome, mat, p1, p2, p3, t1, t2, f, nF, si)
+                push!(turma, aluno)
             end
             close(s)
             println("Arquivo $arquivo lido com sucesso!\n")
@@ -122,7 +124,7 @@ function criaTurma()
     arquivo = readline()
     try # se existe
         open(arquivo, "r") do s
-            print("Arquivo $arquivo já existe. Deseja sobrescrevê-lo? (S/N)")
+            println("Arquivo $arquivo já existe. Deseja sobrescrevê-lo? (S/N)")
             resposta = readline()
             if resposta == "S" || resposta == "s"
                 open(s, "w")
@@ -166,16 +168,66 @@ function telaImprimeEstatisticas(turma::Array{Aluno})
         print("Não há turma carregada!\n")
         return
     else
+        notan1=[]
+        notan2=[]
+        notan3=[]
+        notat1=[]
+        notat2=[]
+        final=[]
+        situ=[]
         @printf("""
             --------------------------------------------------------------
                                      Estatísticas
             --------------------------------------------------------------
-                                    N1    N2    N3    T1    T2    Final
+                                       N1    N2    N3    T1    T2    Final
             --------------------------------------------------------------
             """)
         for aluno in turma
-            
+            push!(notan1, aluno.prova1)
+            push!(notan2, aluno.prova2)
+            push!(notan3, aluno.prova3)
+            push!(notat1, aluno.trabalho1)
+            push!(notat2, aluno.trabalho2)
+            push!(final, aluno.notaFinal)
+            push!(situ, aluno.situacao)
         end
+        notan1=ordenaSelecao(notan1)
+        notan2=ordenaSelecao(notan2)
+        notan3=ordenaSelecao(notan3)
+        notat1=ordenaSelecao(notat1)
+        notat2=ordenaSelecao(notat2)
+        final=ordenaSelecao(final)
+        tam = length(final)
+        median1=media(notan1,tam)
+        median2=media(notan2,tam)
+        median3=media(notan3,tam)
+        mediat1=media(notat1, tam)
+        mediat2=media(notat2, tam)
+        mediaFinal=media(final, tam)
+        medianan1=mediana(notan1, tam)
+        medianan2=mediana(notan2, tam)
+        medianan3=mediana(notan3, tam)
+        medianat1=mediana(notat1, tam)
+        medianat2=mediana(notat2, tam)
+        medianaFinal=mediana(final, tam)
+        aprovados = contarSituacao(situ, "A")
+        reprovados = contarSituacao(situ, "R")
+        reprovadosfalta = contarSituacao(situ, "F")
+        pc=0
+        println("Maiores  notas da turma    $(notan1[tam])    $(notan2[tam])    $(notan3[tam])    $(notat1[tam])    $(notat2[tam])      $(final[tam])")
+        println("Menores  notas da turma    $(notan1[1])      $(notan2[1])     $(notan3[1])     $(notat1[1])     $(notat2[1])      $(final[1])")
+        println("Notas  medias  da turma    $(median1)  $(median2)  $(median3)  $(mediat1)  $(mediat2)    $(mediaFinal)") 
+        println("Notas medianas da turma    $(medianan1)  $(medianan2)  $(medianan3)  $(medianat1)  $(medianat2)  $(medianaFinal)") 
+        println("--------------------------------------------------------------")
+        println()
+        pc= 100/tam*aprovados
+        println("Número de estudantes aprovados:                   $(aprovados) ($pc %)")
+        pc= 100/tam*reprovados
+        println("Número de estudantes reprovados:                  $(reprovados) ($pc %)")
+        pc= 100/tam*reprovadosfalta
+        println("Número de estudantes reprovados com falta:        $(reprovadosfalta) ($pc %)") 
+        println()
+        println("Histograma")
     end
 end
 
@@ -313,6 +365,7 @@ function telaRelerTurma(turma, arquivo)
     if isempty(turma)
         print("Não há turma carregada!\n")
     else
+        turma::Array{Aluno} = []
         open(arquivo, "r") do s
             while !eof(s)
                 nome = readline(s)
@@ -330,17 +383,99 @@ function telaRelerTurma(turma, arquivo)
             end
             close(s)
             println("Arquivo $arquivo lido com sucesso!\n")
+        end
     end
     return turma, arquivo
 end
 
-function media(turma::Array{Aluno}, cat)
-    soma = 0.0
-    for aluno in turma
-        soma += aluno.cat
+function ordenaSelecao(vector::Vector)
+    tam = length(vector)
+    for i in 1 : tam
+        imenor=i
+        for j in i+1 : tam
+            if vector[j] < vector[imenor]
+                imenor = j
+            end
+        end
+    temp = vector[i]
+    vector[i] = vector[imenor]
+    vector[imenor] = temp
     end
-    media = soma / length(turma)
+    return vector
+end
+
+function media(vector::Vector, tam)
+    soma = 0.0
+    for el in vector
+        soma += el
+    end
+    media = soma / tam
+    media = round(media, digits = 1)
     return media
+end
+
+function mediana(vector::Vector, tam)
+    if tam % 2 == 0
+        tam = floor(Int, (tam/2))
+        return ((vector[tam] + vector[tam+1]) / 2.0)
+    else
+        tam = floor(Int, ((tam/2)+0.5))
+        return (vector[tam])
+    end
+
+end
+
+function contarSituacao(vector::Vector, sit)
+    cont = 0
+    for i in 1:length(vector)
+        if vector[i] == sit
+            cont += 1
+        end
+    end
+    return cont
+end
+
+function salvarSair(turma::Array{Aluno}, arquivo)
+    try # se existe
+        open(arquivo, "r+") do s
+            println("Arquivo $arquivo já existe. Deseja sobrescrevê-lo? (S/N) ")
+            resposta = readline()
+            if resposta == "S" || resposta == "s"
+                for aluno in turma
+                    println(s, aluno.nome)
+                    println(s, aluno.matricula)
+                    println(s, aluno.prova1)
+                    println(s, aluno.prova2)
+                    println(s, aluno.prova3)
+                    println(s, aluno.trabalho1)
+                    println(s, aluno.trabalho2)
+                    println(s, aluno.faltas)
+                    println(s, aluno.notaFinal)
+                end
+            end
+        end
+    catch #se não existe
+        println("Arquivo $arquivo não existe. Deseja criar um novo? (S/N) ")
+        resposta = readline()
+        if resposta == "S" || resposta == "s"
+            open(arquivo, "w+") do s
+                for aluno in turma
+                    println(s, aluno.nome)
+                    println(s, aluno.matricula)
+                    println(s, aluno.prova1)
+                    println(s, aluno.prova2)
+                    println(s, aluno.prova3)
+                    println(s, aluno.trabalho1)
+                    println(s, aluno.trabalho2)
+                    println(s, aluno.faltas)
+                    println(s, aluno.notaFinal)
+                end
+            end
+        end
+    end
+    println("Até a próxima")
+    println()
+    return
 end
 
 telaInicial()

@@ -7,7 +7,6 @@ Jackson do Pandeiro
 12
 2
 82
-A
 Luiz Gonzaga
 10011BCC498
 19
@@ -17,7 +16,6 @@ Luiz Gonzaga
 13
 2
 86
-A
 Alberto Roberto
 10011BCC499
 5
@@ -27,7 +25,6 @@ Alberto Roberto
 3
 17
 33
-R
 Chico Bento
 10011BCC500
 5
@@ -37,4 +34,3 @@ Chico Bento
 11
 40
 46
-F
