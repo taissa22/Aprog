@@ -235,7 +235,7 @@ function telaImprimeEstatisticas(turma::Array{Aluno})
         pc= 100/tam*reprovadosfalta
         println("Número de estudantes reprovados com falta:        $(reprovadosfalta) ($pc %)") 
         println()
-        println("Histograma")
+        Histograma(final)
     end
 end
 
@@ -422,6 +422,40 @@ function media(vector::Vector, tam)
     media = round(media, digits = 1)
     return media
 end
+
+function conteFrequencia(notas, min, max)
+    freq=0
+    for nota in notas
+        if nota>min && nota<max
+            freq=freq+1
+        end
+    end
+    return freq
+end
+
+function crieHistograma(freq, min, max)
+    print("$min - $max   $freq ")
+    if freq>0
+        for i in freq
+            print("*")
+        end
+    end
+    println()
+    
+end
+
+
+function Histograma(notas)
+    min=0
+    max=10
+    while max<=100
+        min+=1
+        freq=conteFrequencia(notas, min, max)
+        crieHistograma(freq, min, max)
+        min=min+9
+        max=max+10
+    end
+end 
 
 function mediana(vector::Vector, tam)
     if tam % 2 == 0
