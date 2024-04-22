@@ -1,7 +1,7 @@
 using Base
 using Printf
 
-struct Aluno
+mutable struct Aluno
     nome::String
     matricula::String
     prova1::Int
@@ -147,16 +147,24 @@ function telaImprimeTurma(turma::Array{Aluno})
         return
     else
         @printf("""
-            --------------------------------------------------------------
+            ------------------------------------------------------------------
                                      Estudantes
-            --------------------------------------------------------------
-            Nome                   Matrícula N1 N2 N3 T1 T2 Fal  Final Sit
-            --------------------------------------------------------------
+            ------------------------------------------------------------------
+            Nome                   Matrícula   N1 N2 N3 T1 T2  Fal  Final Sit
+            ------------------------------------------------------------------
             """)
         for aluno in turma
-            print("$(aluno.nome)    $(aluno.matricula) $(aluno.prova1) $(aluno.prova2) $(aluno.prova3) $(aluno.trabalho1) $(aluno.trabalho2) $(aluno.faltas)         $(aluno.situacao)\n")
+            print("$(aluno.nome)") 
+            for i in 1:(23-length(aluno.nome)) 
+                print(" ")
+            end
+            print("$(aluno.matricula) $(aluno.prova1) $(aluno.prova2) $(aluno.prova3) $(aluno.trabalho1) $(aluno.trabalho2)   $(aluno.faltas)    $(aluno.notaFinal)    $(aluno.situacao)\n")
+            
+            #@printf("""
+            #%s            %s %d %d %d %d %d %d    %d    %s
+            #""", aluno.nome, aluno.matricula, aluno.prova1, aluno.prova2, aluno.prova3, aluno.trabalho1, aluno.trabalho2, aluno.faltas, aluno.notaFinal,aluno.situacao)
         end
-        println("--------------------------------------------------------------")
+        println("------------------------------------------------------------------")
         println()
         return
     end
@@ -321,7 +329,7 @@ end
 function infoAluno(turma::Array{Aluno}, index)
     opc=0
     while opc!=9
-        ler_opcao(1, 9)
+        opc = ler_opcao(1, 9)
         if opc == 1
             println(turma[index].nome)
             # print("Digite o nome do estudante: ")
@@ -343,17 +351,18 @@ function infoAluno(turma::Array{Aluno}, index)
             turma[index].trabalho1 = parse(Int, readline())
         elseif opc == 7
             print("Digite a nota da T2: ")
-            turma[index].trabalho2 = parse(Int, readline())
+            turma[index].trabalho2  = parse(Int, readline())
         elseif opc == 8
-            print("Digite a falta: ")
+            print("Digite a falta: ") 
             turma[index].faltas = parse(Int, readline())
         end
-        turma[index].notaFinal = turma[index].prova1+turma[index].prova2+turma[index].prova3+turma[index].trabalho1+turma[index].trabalho2
-        if final > 60 && f<18
+        final = turma[index].prova1+turma[index].prova2+turma[index].prova3+turma[index].trabalho1+turma[index].trabalho2
+        turma[index].notaFinal = final
+        if final > 60 && turma[index].faltas<18
             si = "A"
-        elseif final <= 60 && f<18
+        elseif final <= 60 && turma[index].faltas<18
             si = "R"
-        elseif f>=18
+        elseif turma[index].faltas>=18
             si = "F"
         end
         turma[index].situacao = si
@@ -451,6 +460,7 @@ function salvarSair(turma::Array{Aluno}, arquivo)
                     println(s, aluno.trabalho2)
                     println(s, aluno.faltas)
                     println(s, aluno.notaFinal)
+                    println(s, aluno.situacao)
                 end
             end
         end
@@ -469,6 +479,7 @@ function salvarSair(turma::Array{Aluno}, arquivo)
                     println(s, aluno.trabalho2)
                     println(s, aluno.faltas)
                     println(s, aluno.notaFinal)
+                    println(s, aluno.situacao)
                 end
             end
         end
